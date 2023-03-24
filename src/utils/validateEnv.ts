@@ -7,7 +7,8 @@ function validateEnv() : void {
     }),
     MONGO_PATH: str(),
     DATABASE_NAME: str(),
-    PORT : port({default: 3000})
+    PORT : port({default: 3000}),
+    JWT_SECRET: str(),
   })
 }
 
