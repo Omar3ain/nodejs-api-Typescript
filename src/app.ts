@@ -16,11 +16,17 @@ class App {
     this.expess = express();
     this.port = port;
 
-    this.intializeDatabaseConnection();
-    this.initializeControllers(controllers);
+    this.initializeDatabaseConnection();
     this.initializeMiddleware();
+    this.initializeControllers(controllers);
     this.initializeErrorHandling();
   }
+  
+  private initializeDatabaseConnection() : void {
+    const { MONGO_PATH, DATABASE_NAME } = process.env;
+    mongoose.connect(`${MONGO_PATH}/${DATABASE_NAME}`);
+  }
+
   private initializeMiddleware() : void {
     this.expess.use(helmet())
     this.expess.use(cors());
@@ -36,20 +42,13 @@ class App {
     })
   }
 
-  private intializeDatabaseConnection() : void {
-    const { MONGO_USERNAME, MONGO_PASSWORD, MONGO_PATH } = process.env;
-
-    mongoose.connect(`mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}${MONGO_PATH}`);
-  }
-
   private initializeErrorHandling() : void {
     this.expess.use(ErrorMiddleware);
   }
 
   public listen() : void {
     this.expess.listen(this.port, () => {
-      console.log(`App listening on port ${this.port}`);
-      
+      console.log(`App listening on port http://localhost:${this.port}`);
     })
   }
 
